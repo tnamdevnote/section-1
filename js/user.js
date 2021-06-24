@@ -19,7 +19,7 @@ async function login(evt) {
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
 
-  loginForm.trigger("reset");
+  loginForm.value = '';
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
@@ -108,7 +108,7 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
-  allStoriesList.style.display = 'block';
+  allStoriesList.classList.remove('hidden');
 
   updateNavOnLogin();
 }

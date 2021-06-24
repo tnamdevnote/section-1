@@ -49,5 +49,5 @@ function putStoriesOnPage() {
     allStoriesList.append($story);
   }
 
-  allStoriesList.style.display = 'block';
+  allStoriesList.classList.remove('hidden');
 }

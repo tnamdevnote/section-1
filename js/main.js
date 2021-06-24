@@ -9,6 +9,7 @@ const allStoriesList = document.querySelector("#all-stories-list");
 const loginForm = document.querySelector("#login-form");
 const signupForm = document.querySelector("#signup-form");
 
+const navAll = document.querySelector("#nav-all");
 const navLogin = document.querySelector("#nav-login");
 const navUserProfile = document.querySelector("#nav-user-profile");
 const navLogOut = document.querySelector("#nav-logout");
@@ -24,7 +25,7 @@ function hidePageComponents() {
     loginForm,
     signupForm,
   ];
-  components.forEach(c => c.style.display = 'none');
+  components.forEach(c => c.classList.add('hidden'));
 }
 
 /** Overall function to kick off the app. */

@@ -12,15 +12,15 @@ function navAllStories(evt) {
   putStoriesOnPage();
 }
 
-body.addEventListener("click", navAllStories);
+navAll.addEventListener("click", navAllStories);
 
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
   console.debug("navLoginClick", evt);
-  hidePageComponents();
-  loginForm.show();
-  signupForm.show();
+  allStoriesList.classList.add('hidden')
+  loginForm.classList.remove('hidden');
+  signupForm.classList.remove('hidden');
 }
 
 navLogin.addEventListener("click", navLoginClick);
@@ -32,7 +32,7 @@ function updateNavOnLogin() {
   // document.querySelector(".main-nav-links").style.display = 'block'
   // // $(".main-nav-links").show();
   navLogin.style.display = 'none';
-  navLogOut.style.display = 'block';
+  navLogOut.classList.remove('hidden');
   navUserProfile.append(`${currentUser.username}`)
-  navUserProfile.style.display = 'block';
+  navUserProfile.classList.remove('hidden');
 }
