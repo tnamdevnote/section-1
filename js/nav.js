@@ -18,7 +18,7 @@ navAll.addEventListener("click", navAllStories);
 
 function navLoginClick(evt) {
   console.debug("navLoginClick", evt);
-  allStoriesList.classList.add('hidden')
+  hidePageComponents();
   loginForm.classList.remove('hidden');
   signupForm.classList.remove('hidden');
 }
@@ -36,3 +36,9 @@ function updateNavOnLogin() {
   navUserProfile.append(`${currentUser.username}`)
   navUserProfile.classList.remove('hidden');
 }
+
+function navSubmitStory(evt) {
+  storySubmitForm.classList.remove('hidden');
+}
+
+navSubmit.addEventListener("click", navSubmitStory)

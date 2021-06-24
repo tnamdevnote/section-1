@@ -51,3 +51,4 @@ function putStoriesOnPage() {
 
   allStoriesList.classList.remove('hidden');
 }
+
