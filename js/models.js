@@ -79,7 +79,7 @@ class StoryList {
       url: `${BASE_URL}/stories`,
       method: "POST",
       data: {
-        token: localStorage.token,
+        token: user.loginToken,
         story: {
           author: newStory.author,
           title: newStory.title,
@@ -87,7 +87,6 @@ class StoryList {
         }
       }
     });
-    
     return new Story(response.data.story)
   }
 }

@@ -52,3 +52,19 @@ function putStoriesOnPage() {
   allStoriesList.classList.remove('hidden');
 }
 
+async function onClickSubmit(evt) {
+  console.log('onClickSubmit', evt);
+  evt.preventDefault();
+
+  const author = document.querySelector('#submit-author').value;
+  const title = document.querySelector('#submit-title').value;
+  const url = document.querySelector('#submit-url').value;
+
+  const newStory = await storyList.addStory(currentUser, {author, title, url});
+  console.log(newStory);
+  storyList.stories.unshift(newStory);
+  putStoriesOnPage();
+  storySubmitForm.classList.add('hidden');
+}
+
+storySubmitForm.addEventListener('submit', onClickSubmit)
