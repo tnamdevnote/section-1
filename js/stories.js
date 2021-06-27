@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const li = document.createElement('li');
   li.setAttribute('id', `${story.storyId}`);
   li.innerHTML = `
+      <i class="far fa-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
@@ -33,7 +34,7 @@ function generateStoryMarkup(story) {
       <small class="story-user">posted by ${story.username}</small>
   `
   return li
-  ;
+    ;
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -60,11 +61,31 @@ async function onClickSubmit(evt) {
   const title = document.querySelector('#submit-title').value;
   const url = document.querySelector('#submit-url').value;
 
-  const newStory = await storyList.addStory(currentUser, {author, title, url});
+  const newStory = await storyList.addStory(currentUser, { author, title, url });
   console.log(newStory);
   storyList.stories.unshift(newStory);
   putStoriesOnPage();
   storySubmitForm.classList.add('hidden');
 }
 
-storySubmitForm.addEventListener('submit', onClickSubmit)
+storySubmitForm.addEventListener('submit', onClickSubmit);
+
+
+
+allStoriesList.addEventListener('click', (evt) => {
+  const storyId = evt.target.parentElement.id;
+  const username = currentUser.username;
+  const token = currentUser.loginToken;
+  //favorite
+  evt.target.classList[0] === 'far' ? (
+    evt.target.classList.replace('far', 'fas'),
+    User.favorite(token, username, storyId)
+  ) : //unfavorite
+    (
+      evt.target.classList.replace('fas', 'far'),
+      User.unFavorite(token, username, storyId)
+    )
+
+
+  console.log()
+})

@@ -103,13 +103,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
@@ -204,6 +204,32 @@ class User {
     } catch (err) {
       console.error("loginViaStoredCredentials failed", err);
       return null;
+    }
+  }
+
+  static async favorite(token, username, storyId) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        method: "POST",
+        params: { token }
+      })
+      console.log(response)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  static async unFavorite(token, username, storyId) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        method: "DELETE",
+        params: { token }
+      })
+      console.log(response)
+    } catch (err) {
+      console.log(err)
     }
   }
 }
