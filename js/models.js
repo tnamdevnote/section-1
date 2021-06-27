@@ -214,7 +214,8 @@ class User {
         method: "POST",
         params: { token }
       })
-      console.log(response)
+      currentUser.favorites = response.data.user.favorites;
+      console.log(currentUser, response.data.user.favorites)
     } catch (err) {
       console.log(err)
     }
@@ -227,7 +228,8 @@ class User {
         method: "DELETE",
         params: { token }
       })
-      console.log(response)
+      currentUser.favorites = response.data.user.favorites;
+      console.log(currentUser, response.data.user.favorites)
     } catch (err) {
       console.log(err)
     }
