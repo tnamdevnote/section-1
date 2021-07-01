@@ -30,15 +30,22 @@ navLogin.addEventListener("click", navLoginClick);
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   // document.querySelector(".main-nav-links").style.display = 'block'
-  // // $(".main-nav-links").show();
   navLogin.style.display = 'none';
   navLogOut.classList.remove('hidden');
   navUserProfile.append(`${currentUser.username}`)
   navUserProfile.classList.remove('hidden');
 }
 
-function navSubmitStory(evt) {
-  storySubmitForm.classList.remove('hidden');
+function navSubmitStory() {
+  storySubmitForm.classList.toggle('hidden');
 }
 
 navSubmit.addEventListener("click", navSubmitStory)
+
+
+function navFavoriteStory() {
+  // favStoriesList.classList.toggle('hidden');
+  // allStoriesList.classList.add('hidden');
+  putFavStoriesOnPage();
+}
+navFavorite.addEventListener("click", navFavoriteStory)

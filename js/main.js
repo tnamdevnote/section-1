@@ -3,15 +3,18 @@
 
 const body = document.querySelector('body');
 
+const storiesContainer = document.querySelector(".stories-container")
 const storySubmitForm = document.querySelector("#submit-form");
 const storiesLoadingMsg = document.querySelector("#stories-loading-msg");
 const allStoriesList = document.querySelector("#all-stories-list");
+const favStoriesList = document.querySelector("#fav-stories-list");
 
 const loginForm = document.querySelector("#login-form");
 const signupForm = document.querySelector("#signup-form");
 
 const navAll = document.querySelector("#nav-all");
 const navSubmit = document.querySelector("#nav-submit");
+const navFavorite = document.querySelector("#nav-favorite");
 const navLogin = document.querySelector("#nav-login");
 const navUserProfile = document.querySelector("#nav-user-profile");
 const navLogOut = document.querySelector("#nav-logout");
@@ -24,6 +27,7 @@ const navLogOut = document.querySelector("#nav-logout");
 function hidePageComponents() {
   const components = [
     allStoriesList,
+    favStoriesList,
     storySubmitForm,
     loginForm,
     signupForm,

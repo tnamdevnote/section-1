@@ -214,8 +214,11 @@ class User {
         method: "POST",
         params: { token }
       })
-      currentUser.favorites = response.data.user.favorites;
-      console.log(currentUser, response.data.user.favorites)
+
+      let { user } = response.data;
+      currentUser.favorites = user.favorites.map(favorite => {
+        return new Story(favorite);
+      })
     } catch (err) {
       console.log(err)
     }
@@ -228,8 +231,11 @@ class User {
         method: "DELETE",
         params: { token }
       })
-      currentUser.favorites = response.data.user.favorites;
-      console.log(currentUser, response.data.user.favorites)
+
+      let { user } = response.data;
+      currentUser.favorites = user.favorites.map(favorite => {
+        return new Story(favorite);
+      })
     } catch (err) {
       console.log(err)
     }

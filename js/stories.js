@@ -21,11 +21,12 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
+  const favoriteStatus = currentUser.favorites.some(favorite => favorite.storyId === story.storyId) ? "fas" : "far";
   const hostName = story.getHostName();
   const li = document.createElement('li');
   li.setAttribute('id', `${story.storyId}`);
   li.innerHTML = `
-      <i class="far fa-star"></i>
+      <i class="${favoriteStatus} fa-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
@@ -53,16 +54,26 @@ function putStoriesOnPage() {
   allStoriesList.classList.remove('hidden');
 }
 
+function putFavStoriesOnPage() {
+
+  favStoriesList.innerHTML = '';
+
+  currentUser.favorites.forEach(favorite => {
+    const favStory = generateStoryMarkup(favorite);
+    favStoriesList.append(favStory);
+  })
+  allStoriesList.classList.add('hidden');
+  favStoriesList.classList.remove('hidden');
+}
+
 async function onClickSubmit(evt) {
   console.log('onClickSubmit', evt);
   evt.preventDefault();
-
   const author = document.querySelector('#submit-author').value;
   const title = document.querySelector('#submit-title').value;
   const url = document.querySelector('#submit-url').value;
 
   const newStory = await storyList.addStory(currentUser, { author, title, url });
-  console.log(newStory);
   storyList.stories.unshift(newStory);
   putStoriesOnPage();
   storySubmitForm.classList.add('hidden');
@@ -70,22 +81,20 @@ async function onClickSubmit(evt) {
 
 storySubmitForm.addEventListener('submit', onClickSubmit);
 
-
-
-allStoriesList.addEventListener('click', (evt) => {
+function toggleFavorite(evt) {
+  console.debug("toggleFavorite")
   const storyId = evt.target.parentElement.id;
   const username = currentUser.username;
   const token = currentUser.loginToken;
   //favorite
-  evt.target.classList[0] === 'far' ? (
-    evt.target.classList.replace('far', 'fas'),
-    User.favorite(token, username, storyId)
-  ) : //unfavorite
-    (
-      evt.target.classList.replace('fas', 'far'),
-      User.unFavorite(token, username, storyId)
-    )
+  if (evt.target.classList[0] === 'far') {
+    evt.target.classList.replace('far', 'fas');
+    User.favorite(token, username, storyId);
+  } //unfavorite
+  else if (evt.target.classList[0] === 'fas') {
+    evt.target.classList.replace('fas', 'far');
+    User.unFavorite(token, username, storyId);
+  }
+}
 
-
-  console.log()
-})
+storiesContainer.addEventListener('click', toggleFavorite);

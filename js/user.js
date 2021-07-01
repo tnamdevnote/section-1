@@ -23,6 +23,7 @@ async function login(evt) {
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
+  navAllStories();
 }
 
 loginForm.addEventListener("submit", login);
