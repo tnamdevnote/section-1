@@ -26,7 +26,7 @@ const navLogOut = document.querySelector("#nav-logout");
  * calling this, individual components can re-show just what they want.
  */
 
-function hidePageComponents() {
+const hidePageComponents = () => {
   const components = [
     allStoriesList,
     favStoriesList,
@@ -39,7 +39,7 @@ function hidePageComponents() {
 }
 
 /** Overall function to kick off the app. */
-async function start() {
+const start = async () => {
   console.debug("start");
 
   // "Remember logged-in user" and log in, if credentials in localStorage

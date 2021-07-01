@@ -8,7 +8,7 @@ let currentUser;
  */
 
 /** Handle login form submission. If login ok, sets up the user instance */
-async function login(evt) {
+const login = async (evt) => {
   console.debug("login", evt);
   evt.preventDefault();
   // grab the username and password
@@ -30,7 +30,7 @@ loginForm.addEventListener("submit", login);
 
 /** Handle signup form submission. */
 
-async function signup(evt) {
+const signup = async (evt) => {
   console.debug("signup", evt);
   evt.preventDefault();
 
@@ -55,7 +55,7 @@ signupForm.addEventListener("submit", signup);
  * Remove their credentials from localStorage and refresh page
  */
 
-function logout(evt) {
+const logout = (evt) => {
   console.debug("logout", evt);
   localStorage.clear();
   location.reload();
@@ -71,7 +71,7 @@ navLogOut.addEventListener("click", logout);
  * that user. This is meant to be called on page load, just once.
  */
 
-async function checkForRememberedUser() {
+const checkForRememberedUser = async () => {
   console.debug("checkForRememberedUser");
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
@@ -87,7 +87,7 @@ async function checkForRememberedUser() {
  * (or the user revisits the site later), they will still be logged in.
  */
 
-function saveUserCredentialsInLocalStorage() {
+const saveUserCredentialsInLocalStorage = () => {
   console.debug("saveUserCredentialsInLocalStorage");
   if (currentUser) {
     localStorage.setItem("token", currentUser.loginToken);
@@ -106,7 +106,7 @@ function saveUserCredentialsInLocalStorage() {
  * - generate the user profile part of the page
  */
 
-function updateUIOnUserLogin() {
+const updateUIOnUserLogin = () => {
   console.debug("updateUIOnUserLogin");
 
   allStoriesList.classList.remove('hidden');

@@ -5,7 +5,7 @@ let storyList;
 
 /** Get and show stories when site first loads. */
 
-async function getAndShowStoriesOnStart() {
+const getAndShowStoriesOnStart = async () => {
   storyList = await StoryList.getStories();
   storiesLoadingMsg.remove();
 
@@ -19,8 +19,7 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+const generateStoryMarkup = (story) => {
   const favoriteStatus = currentUser.favorites.some(favorite => favorite.storyId === story.storyId) ? "fas" : "far";
   const hostName = story.getHostName();
   const li = document.createElement('li');
@@ -40,7 +39,7 @@ function generateStoryMarkup(story) {
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage() {
+const putStoriesOnPage = () => {
   console.debug("putStoriesOnPage");
 
   allStoriesList.innerHTML = '';
@@ -54,9 +53,8 @@ function putStoriesOnPage() {
   allStoriesList.classList.remove('hidden');
 }
 
-
-
-async function onClickSubmit(evt) {
+// When user clicks submit button, save the new story to storyList and currentUser's ownStories list.
+const onClickSubmit = async (evt) => {
   console.log('onClickSubmit', evt);
   evt.preventDefault();
   const author = document.querySelector('#submit-author').value;
@@ -67,23 +65,15 @@ async function onClickSubmit(evt) {
   currentUser.ownStories.push(newStory);
   storyList.stories.unshift(newStory);
   putStoriesOnPage();
+
   storySubmitForm.classList.add('hidden');
 }
 
 storySubmitForm.addEventListener('submit', onClickSubmit);
 
-// Favorite 
-function putFavStoriesOnPage() {
 
-  favStoriesList.innerHTML = '';
-
-  currentUser.favorites.forEach(favorite => {
-    const favStory = generateStoryMarkup(favorite);
-    favStoriesList.append(favStory);
-  })
-}
-
-function toggleFavorite(evt) {
+// When a user clicks favorite button, save/remove it to/from the user's favorite list
+const toggleFavorite = (evt) => {
   console.debug("toggleFavorite")
   const storyId = evt.target.parentElement.id;
   const username = currentUser.username;
@@ -103,7 +93,20 @@ function toggleFavorite(evt) {
 
 storiesContainer.addEventListener('click', toggleFavorite);
 
-function putMyStoriesOnPage() {
+// Retrieve favorited stories and display them on Favorite page
+const putFavStoriesOnPage = () => {
+
+  favStoriesList.innerHTML = '';
+
+  currentUser.favorites.forEach(favorite => {
+    const favStory = generateStoryMarkup(favorite);
+    favStoriesList.append(favStory);
+  })
+}
+
+
+// Put currentUseer's ownStories on My Story Page
+const putMyStoriesOnPage = () => {
 
   myStoriesList.innerHTML = '';
 
@@ -114,7 +117,8 @@ function putMyStoriesOnPage() {
   })
 }
 
-async function deleteStory(evt) {
+// Delete currentUser's own story from storyList, favorite story, and ownStories
+const deleteStory = async (evt) => {
   const storyId = evt.target.parentElement.id;
   const token = currentUser.loginToken;
   if (evt.target.classList[0] === 'delete') {
