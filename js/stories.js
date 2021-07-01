@@ -26,7 +26,7 @@ function generateStoryMarkup(story) {
   const li = document.createElement('li');
   li.setAttribute('id', `${story.storyId}`);
   li.innerHTML = `
-      <i class="${favoriteStatus} fa-star"></i>
+      <i class="favorite ${favoriteStatus} fa-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
@@ -54,17 +54,7 @@ function putStoriesOnPage() {
   allStoriesList.classList.remove('hidden');
 }
 
-function putFavStoriesOnPage() {
 
-  favStoriesList.innerHTML = '';
-
-  currentUser.favorites.forEach(favorite => {
-    const favStory = generateStoryMarkup(favorite);
-    favStoriesList.append(favStory);
-  })
-  allStoriesList.classList.add('hidden');
-  favStoriesList.classList.remove('hidden');
-}
 
 async function onClickSubmit(evt) {
   console.log('onClickSubmit', evt);
@@ -74,6 +64,7 @@ async function onClickSubmit(evt) {
   const url = document.querySelector('#submit-url').value;
 
   const newStory = await storyList.addStory(currentUser, { author, title, url });
+  currentUser.ownStories.push(newStory);
   storyList.stories.unshift(newStory);
   putStoriesOnPage();
   storySubmitForm.classList.add('hidden');
@@ -81,20 +72,59 @@ async function onClickSubmit(evt) {
 
 storySubmitForm.addEventListener('submit', onClickSubmit);
 
+// Favorite 
+function putFavStoriesOnPage() {
+
+  favStoriesList.innerHTML = '';
+
+  currentUser.favorites.forEach(favorite => {
+    const favStory = generateStoryMarkup(favorite);
+    favStoriesList.append(favStory);
+  })
+}
+
 function toggleFavorite(evt) {
   console.debug("toggleFavorite")
   const storyId = evt.target.parentElement.id;
   const username = currentUser.username;
   const token = currentUser.loginToken;
   //favorite
-  if (evt.target.classList[0] === 'far') {
-    evt.target.classList.replace('far', 'fas');
-    User.favorite(token, username, storyId);
-  } //unfavorite
-  else if (evt.target.classList[0] === 'fas') {
-    evt.target.classList.replace('fas', 'far');
-    User.unFavorite(token, username, storyId);
+  if (evt.target.classList[0] === 'favorite') {
+    if (evt.target.classList[1] === 'far') {
+      evt.target.classList.replace('far', 'fas');
+      User.favorite(token, username, storyId);
+    } //unfavorite
+    else if (evt.target.classList[1] === 'fas') {
+      evt.target.classList.replace('fas', 'far');
+      User.unFavorite(token, username, storyId);
+    }
   }
 }
 
 storiesContainer.addEventListener('click', toggleFavorite);
+
+function putMyStoriesOnPage() {
+
+  myStoriesList.innerHTML = '';
+
+  currentUser.ownStories.forEach(ownStory => {
+    const myStory = generateStoryMarkup(ownStory);
+    myStory.insertAdjacentHTML('afterbegin', '<i class="delete far fa-trash-alt"></i>')
+    myStoriesList.prepend(myStory);
+  })
+}
+
+async function deleteStory(evt) {
+  const storyId = evt.target.parentElement.id;
+  const token = currentUser.loginToken;
+  if (evt.target.classList[0] === 'delete') {
+    await User.deleteMyStories(token, storyId);
+    putMyStoriesOnPage();
+    storyList.stories.forEach((story, i) => {
+      story.storyId === storyId ?
+        storyList.stories.splice(i, 1) : ""
+    })
+  }
+}
+
+storiesContainer.addEventListener('click', deleteStory);

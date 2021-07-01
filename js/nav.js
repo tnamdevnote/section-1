@@ -44,8 +44,16 @@ navSubmit.addEventListener("click", navSubmitStory)
 
 
 function navFavoriteStory() {
-  // favStoriesList.classList.toggle('hidden');
-  // allStoriesList.classList.add('hidden');
+  hidePageComponents();
+  favStoriesList.classList.remove('hidden');
   putFavStoriesOnPage();
 }
-navFavorite.addEventListener("click", navFavoriteStory)
+navFavorite.addEventListener("click", navFavoriteStory);
+
+
+navMyStory.addEventListener('click', () => {
+
+  hidePageComponents();
+  myStoriesList.classList.remove('hidden');
+  putMyStoriesOnPage();
+})

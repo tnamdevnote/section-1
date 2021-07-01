@@ -240,4 +240,26 @@ class User {
       console.log(err)
     }
   }
+
+  static async deleteMyStories(token, storyId) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/stories/${storyId}`,
+        method: "DELETE",
+        params: { token }
+      })
+
+      console.log(response.data)
+      currentUser.ownStories.forEach((ownStory, i) => {
+        ownStory.storyId === response.data.story.storyId ?
+          currentUser.ownStories.splice(i, 1) : ""
+      })
+      currentUser.favorites.forEach((favorite, i) => {
+        favorite.storyId === response.data.story.storyId ?
+          currentUser.favorites.splice(i, 1) : ""
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
