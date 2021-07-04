@@ -34,6 +34,9 @@ const updateNavOnLogin = () => {
   navLogOut.classList.remove('hidden');
   navUserProfile.append(`${currentUser.username}`)
   navUserProfile.classList.remove('hidden');
+  navSubmit.classList.remove('hidden');
+  navFavorite.classList.remove('hidden');
+  navMyStory.classList.remove('hidden');
 }
 
 // Show Submit Form

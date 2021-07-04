@@ -20,11 +20,13 @@ const getAndShowStoriesOnStart = async () => {
  */
 
 const generateStoryMarkup = (story) => {
-  const favoriteStatus = currentUser.favorites.some(favorite => favorite.storyId === story.storyId) ? "fas" : "far";
   const hostName = story.getHostName();
   const li = document.createElement('li');
   li.setAttribute('id', `${story.storyId}`);
-  li.innerHTML = `
+
+  if (currentUser) {
+    const favoriteStatus = currentUser.favorites.some(favorite => favorite.storyId === story.storyId) ? "fas" : "far";
+    li.innerHTML = `
       <i class="favorite ${favoriteStatus} fa-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
@@ -32,9 +34,18 @@ const generateStoryMarkup = (story) => {
       <small class="story-hostname">(${hostName})</small>
       <small class="story-author">by ${story.author}</small>
       <small class="story-user">posted by ${story.username}</small>
-  `
+    `;
+  } else {
+    li.innerHTML = `
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    `
+  };
   return li
-    ;
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -98,10 +109,10 @@ const putFavStoriesOnPage = () => {
 
   favStoriesList.innerHTML = '';
 
-  currentUser.favorites.forEach(favorite => {
+  currentUser.favorites.length ? currentUser.favorites.forEach(favorite => {
     const favStory = generateStoryMarkup(favorite);
     favStoriesList.append(favStory);
-  })
+  }) : favStoriesList.innerHTML = `No favorites added`;
 }
 
 
@@ -110,11 +121,11 @@ const putMyStoriesOnPage = () => {
 
   myStoriesList.innerHTML = '';
 
-  currentUser.ownStories.forEach(ownStory => {
+  currentUser.ownStories.length ? currentUser.ownStories.forEach(ownStory => {
     const myStory = generateStoryMarkup(ownStory);
     myStory.insertAdjacentHTML('afterbegin', '<i class="delete far fa-trash-alt"></i>')
     myStoriesList.prepend(myStory);
-  })
+  }) : myStoriesList.innerHTML = 'No stories added by user yet!'
 }
 
 // Delete currentUser's own story from storyList, favorite story, and ownStories
