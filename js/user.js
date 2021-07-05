@@ -20,11 +20,11 @@ const login = async (evt) => {
 
   currentUser = await User.login(username, password);
 
-  loginForm.reset();
   if (currentUser) {
     saveUserCredentialsInLocalStorage();
     updateUIOnUserLogin();
     navAllStories();
+    loginForm.reset();
   }
 
 }
