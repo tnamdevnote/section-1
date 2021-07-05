@@ -134,20 +134,25 @@ class User {
       url: `${BASE_URL}/signup`,
       method: "POST",
       data: { user: { username, password, name } },
+    }).catch(error => {
+      alert(error.response.data.error.message)
     });
-
-    let { user } = response.data
-
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      response.data.token
-    );
+    
+    if(response) {
+      let { user } = response.data
+  
+      return new User(
+        {
+          username: user.username,
+          name: user.name,
+          createdAt: user.createdAt,
+          favorites: user.favorites,
+          ownStories: user.stories
+        },
+        response.data.token
+      );
+    }
+    
   }
 
   /** Login in user with API, make User instance & return it.
@@ -157,24 +162,29 @@ class User {
    */
 
   static async login(username, password) {
-    const response = await axios({
-      url: `${BASE_URL}/login`,
-      method: "POST",
-      data: { user: { username, password } },
-    });
+      const response = await axios({
+        url: `${BASE_URL}/login`,
+        method: "POST",
+        data: { user: { username, password } },
+      }).catch(error => {
+        alert(error.response.data.error.message)
+      });
 
-    let { user } = response.data;
+      if(response) {
+        let { user } = response.data;
 
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      response.data.token
-    );
+      return new User(
+        {
+          username: user.username,
+          name: user.name,
+          createdAt: user.createdAt,
+          favorites: user.favorites,
+          ownStories: user.stories
+        },
+        response.data.token
+      )
+      }
+      
   }
 
   /** When we already have credentials (token & username) for a user,

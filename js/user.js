@@ -17,13 +17,16 @@ const login = async (evt) => {
 
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
+
   currentUser = await User.login(username, password);
 
-  loginForm.value = '';
+  loginForm.reset();
+  if (currentUser) {
+    saveUserCredentialsInLocalStorage();
+    updateUIOnUserLogin();
+    navAllStories();
+  }
 
-  saveUserCredentialsInLocalStorage();
-  updateUIOnUserLogin();
-  navAllStories();
 }
 
 loginForm.addEventListener("submit", login);
@@ -42,10 +45,15 @@ const signup = async (evt) => {
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.signup(username, password, name);
 
-  saveUserCredentialsInLocalStorage();
-  updateUIOnUserLogin();
+  if(currentUser) {
+    saveUserCredentialsInLocalStorage();
+    updateUIOnUserLogin();
+    navAllStories();
+    signupForm.reset();
+  }
+  
 
-  signupForm.trigger("reset");
+  
 }
 
 signupForm.addEventListener("submit", signup);
@@ -110,6 +118,5 @@ const updateUIOnUserLogin = () => {
   console.debug("updateUIOnUserLogin");
 
   allStoriesList.classList.remove('hidden');
-
   updateNavOnLogin();
 }
